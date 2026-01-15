@@ -1,0 +1,38 @@
+<a href="{{ .Permalink }}" class="block group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+  <article>
+
+    <figure class="w-full aspect-video overflow-hidden rounded-3xl">
+      {{- if .Params.image }}
+        {{- if (strings.HasPrefix .Params.image "http") }}
+          <img
+            class="rounded-lg"
+            src="{{ .Params.image }}?auto=compress&cs=tinysrgb&w=380"
+            srcset="{{ .Params.image }}?auto=compress&cs=tinysrgb&w=380 380w, {{ .Params.image }}?auto=compress&cs=tinysrgb&w=715 715w, {{ .Params.image }}?auto=compress&cs=tinysrgb&w=1200 1200w"
+            sizes="(max-width: 420px) 380px, (max-width: 768px) 715px, 1200px"
+            width="715"
+            height="402"
+            alt="{{ .Title }}"
+            loading="lazy"
+            decoding="async"
+          /> 
+        {{- else }}
+          {{- with $imgcard := resources.Get .Params.image }}
+            {{- $imgcard = $imgcard.Process "resize 750x" }}
+            <img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer"
+                 src="{{ $imgcard.Permalink }}"
+                 alt="{{ .Title }}"
+                 width="{{ $imgcard.Width }}"
+                 height="{{ $imgcard.Height }}">
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    </figure>
+
+    <div class="p-6 text-black">
+      <time datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+      <h3 class="my-4 text-2xl font-bold">{{ .LinkTitle }}</h3>
+      <p class="text-normal leading-normal text-zinc-500 line-clamp-2">{{ .Params.description }}</p>
+    </div>
+
+  </article>
+</a>

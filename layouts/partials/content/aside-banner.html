@@ -1,0 +1,24 @@
+<div id="iframe-container"></div>
+  <iframe
+  src="https://neuralshyam.pages.dev/banner"
+  title="Responsive Image Iframe"
+  class="rounded-xl border border-gray-300 shadow-sm transition-all duration-300 hover:border-gray-500 hover:shadow-md"
+  style="width: 100%; height: auto; aspect-ratio: 16 / 9; overflow: hidden;"
+  loading="lazy"
+></iframe>
+   
+</div>
+
+<script>
+  function resizeImageContainer(img) {
+    const container = img.parentElement;
+    const ratio = img.naturalHeight / img.naturalWidth;
+
+    function resize() {
+      container.style.height = (container.offsetWidth * ratio) + 'px';
+    }
+
+    resize(); // Initial resize
+    window.addEventListener('resize', resize); // Recalculate on window resize
+  }
+</script>

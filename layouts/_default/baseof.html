@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="{{ or site.Language.LanguageCode site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<head>
+  {{ partial "head.html" . }}
+  {{ partial "head/structured-data.html" . }}
+ <meta name="robots" content="index, follow, max-image-preview:large">
+
+ <link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  
+  <header class="py-6 border-b">
+    {{- partial "header.html" . -}}
+  </header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 overflow-x-auto">
+    {{- block "main" . }}{{ end -}}
+  </main>
+  <footer class="bg-zinc-100 py-10 md:py-14">
+    {{- partial "footer.html" . -}}
+  </footer>
+  {{- partialCached "footer/js.html" . }}
+
+
+  <style>
+#search-results {
+  background-color: white;
+  border: 1px solid #e4e4e7;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+  color: #3f3f46;
+  font-style: italic;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.querySelector('#search input');
+  const searchForm = document.querySelector('#search');
+  const searchResults = document.createElement('div');
+  searchResults.id = "search-results";
+  searchResults.innerHTML = "<p>Search !!</p>"; // initial default message
+  document.getElementById('search-bar').appendChild(searchResults);
+
+  let fuse;
+
+  // Fetch and parse the RSS XML feed
+  fetch("/index.xml")
+    .then(res => res.text())
+    .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+    .then(data => {
+      const items = Array.from(data.querySelectorAll("item")).map(item => ({
+        title: item.querySelector("title").textContent,
+        link: item.querySelector("link").textContent,
+        description: item.querySelector("description")?.textContent.replace(/<[^>]*>/g, "") || ""
+      }));
+
+      fuse = new Fuse(items, {
+        keys: ["title", "description"],
+        threshold: 0.3,
+      });
+    });
+
+  searchForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query || !fuse) return;
+
+    const results = fuse.search(query);
+
+    searchResults.innerHTML = "";
+
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found</p>";
+      return;
+    }
+
+    const ul = document.createElement("ul");
+    results.forEach(result => {
+      const item = result.item;
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${item.link}" class="block py-2 text-blue-600 hover:underline">${item.title}</a>`;
+      ul.appendChild(li);
+    });
+    searchResults.appendChild(ul);
+  });
+});
+</script>
+
+
+<script>
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const storedTheme = localStorage.getItem('theme');
+
+  if (storedTheme) {
+    document.documentElement.setAttribute('data-theme', storedTheme);
+  } else {
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  }
+</script>
+
+</body>
+</html>

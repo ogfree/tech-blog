@@ -1,0 +1,60 @@
+<div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="{{ .Site.BaseURL }}">
+        <img src="/favicon.svg" alt="Techra Logo" style="width:64px;height:auto;">
+
+        
+        <span class="text-2xl font-semibold uppercase">{{ .Site.Title }}</span>
+      </a>
+
+      <p class="font-semibold">
+        {{ with .Site.Params.description }}
+          {{ . }}
+        {{ else }}
+          A sacred digital treasury of devotion, youth energy, and soul-deep realizations.
+        {{ end }}
+      </p>
+
+      <p>
+        <a href="{{ .Site.Params.author.twitter }}"  class="text-blue-600 hover:underline">
+          {{ with .Site.Params.author.name }}{{ . }}{{ else }}Author{{ end }}
+        </a> - {{ with .Site.Params.author.bio }}{{ . }}{{ else }}A youthful servant of Śrī Śrī Guru-Gaurāṅga. Tech monk, kīrtan soldier, and bhakti poet.{{ end }}
+        <br>
+        <span class="text-sm text-gray-500">Follow on Twitter for updates and insights</span> 
+        <a href="{{ .Site.Params.author.twitter }}" class="text-blue-600 hover:underline">
+          {{ .Site.Params.author.twitter }}
+        </a>
+      </p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+{{ partial "content/social-media.html" . }}
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+  <ul class="flex flex-wrap items-center gap-x-4 gap-y-2">
+    {{ range .Site.Menus.main }}
+      <li>
+        <a class="decoration-auto hover:underline font-semibold" href="{{ .URL }}">{{ .Name }}</a>
+      </li>
+    {{ end }}
+  </ul>
+</div>
+
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © {{ now.Year }}. All rights reserved. <a href="shyam-r3.vercel.app" >Shyam</a></p>
+
+  </div>
+  
+</div>

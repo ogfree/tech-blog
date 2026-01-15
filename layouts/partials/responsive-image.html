@@ -1,0 +1,14 @@
+{{- $src := .src -}}
+{{- $alt := .alt | default "" -}}
+
+<img
+  class="rounded-lg"
+  src="{{ $src }}?auto=compress&cs=tinysrgb&w=380"
+  srcset="{{ $src }}?auto=compress&cs=tinysrgb&w=380 380w, {{ $src }}?auto=compress&cs=tinysrgb&w=715 715w, {{ $src }}?auto=compress&cs=tinysrgb&w=1200 1200w"
+  sizes="(max-width: 420px) 380px, (max-width: 768px) 715px, 1200px"
+  width="715"
+  height="402"
+  alt="{{ $alt }}"
+  loading="lazy"
+  decoding="async"
+/>

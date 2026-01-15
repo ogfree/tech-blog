@@ -1,0 +1,14 @@
+# Hugo build output
+/public/
+/resources/
+
+# Hugo cache & build locks
+.hugo_build.lock
+
+<!-- # Ignore all dotfiles in root
+.* -->
+
+# But keep important dotfiles
+!.gitignore
+!.gitattributes
+!.github/
